@@ -1,18 +1,22 @@
 <template>
   <header>
     <h1>{{ title }}</h1>
-    <HeaderButton text="Add Task" color="green"/>
+    <HeaderButton
+      @toggle-add-task="$emit('toggle-add-task')"
+      :text="showAddTask ? 'Close' : 'Add Task'"
+      :color="showAddTask ? 'red' : 'green'"
+    />
   </header>
 </template>
 
 <script>
-import HeaderButton from './Button.vue'; 
+import HeaderButton from "./Button.vue";
 export default {
   name: "Header-component",
-  props: ["title"],
+  props: ["title", "showAddTask"],
   components: {
-      HeaderButton
-  }
+    HeaderButton,
+  },
 };
 </script>
 

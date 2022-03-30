@@ -1,47 +1,69 @@
 <template>
   <div class="container">
-    <HeaderComponent title="Task Tracker" />
-    <TasksComponent @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks" />
+    <HeaderComponent
+      @toggle-add-task="toggleAddTask"
+      title="Task Tracker"
+      :showAddTask="showAddTask"
+    />
+    <div v-if="showAddTask">
+      <AddTask @add-task="addTask" />
+    </div>
+    <TasksComponent
+      @toggle-reminder="toggleReminder"
+      @delete-task="deleteTask"
+      :tasks="tasks"
+    />
   </div>
 </template>
 
 <script>
 import HeaderComponent from "./components/Header";
 import TasksComponent from "./components/Tasks";
+import AddTask from "./components/AddTask";
 export default {
   name: "App",
   components: {
-    HeaderComponent, 
-    TasksComponent
+    HeaderComponent,
+    TasksComponent,
+    AddTask,
   },
-  data(){
-      return {
-          tasks: []
-      }
+  data() {
+    return {
+      tasks: [],
+      showAddTask: false,
+    };
   },
   methods: {
-      deleteTask(id){
-          this.tasks = this.tasks.filter(task => task.id !== id)
-      },
-      toggleReminder(id){
-         this.tasks = this.tasks.map(task => task.id === id ? {...task, reminder: !task.reminder} : task) 
-      }
+    deleteTask(id) {
+      this.tasks = this.tasks.filter((task) => task.id !== id);
+    },
+    toggleReminder(id) {
+      this.tasks = this.tasks.map((task) =>
+        task.id === id ? { ...task, reminder: !task.reminder } : task
+      );
+    },
+    addTask(newTask) {
+      this.tasks = [...this.tasks, newTask];
+    },
+    toggleAddTask() {
+      this.showAddTask = !this.showAddTask;
+    },
   },
-  created(){
-      this.tasks = [
-          {
-              id: 1,
-              text: "Meeting at School",
-              day: "March 3rd at 1:30pm",
-              reminder: true
-          },
-          {
-              id: 2,
-              text: "Food Shopping",
-              day: "March 3rd at 11:00am",
-              reminder: false
-          }
-      ]
+  created() {
+    this.tasks = [
+      {
+        id: 1,
+        text: "Meeting at School",
+        day: "March 3rd at 1:30pm",
+        reminder: true,
+      },
+      {
+        id: 2,
+        text: "Food Shopping",
+        day: "March 3rd at 11:00am",
+        reminder: false,
+      },
+    ];
   }
 };
 </script>
